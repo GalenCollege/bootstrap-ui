@@ -71,6 +71,11 @@ class PaginatorHelper extends \Cake\View\Helper\PaginatorHelper
         ];
 
         unset($options['class'], $options['size']);
+        
+        if(isset($options['first'])){
+            $options['before'] .= $this->first($options['first'], ['escape' => false]);
+            unset($options['first']);
+        }
 
         if (isset($options['prev'])) {
             if ($options['prev'] === true) {
@@ -83,8 +88,15 @@ class PaginatorHelper extends \Cake\View\Helper\PaginatorHelper
             if ($options['next'] === true) {
                 $options['next'] = $this->config('labels.next');
             }
-            $options['after'] = $this->next($options['next'], ['escape' => false]) . $options['after'];
+            $options['after'] = $this->next($options['next'], ['escape' => false]);
         }
+        
+         if(isset($options['last'])){
+            $options['after'] .= $this->last($options['last'], ['escape' => false]);
+            unset($options['last']);
+        }
+        
+       $options['after'] .= "</ul>";
 
         return parent::numbers($options);
     }
